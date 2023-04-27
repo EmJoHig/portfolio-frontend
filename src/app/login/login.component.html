@@ -1,0 +1,37 @@
+<div class="section contact" id="contact">
+    <div id="map" class="map"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 mx-auto">
+                <div class="card">
+                    <div class="contact-form-card">
+                        <h4 class="contact-title">Login</h4>
+                        <form action="" [formGroup]="formLogin">
+                            <!-- <div class="form-group">
+                                <input class="form-control" type="text" placeholder="Usuario" pinputText required formControlName="nombreusuario" name="nombreusuario">
+                            </div> -->
+                            <div class="form-group">
+                                <input class="form-control" type="text" placeholder="Usuario" pinputText required formControlName="nombreUsuario" name="nombreUsuario">
+                                <span style="color: blueviolet;" *ngIf="formLogin.controls['nombreUsuario'].errors?.['required'] && formLogin.controls['nombreUsuario'].touched">Ingrese el nombre de usuario</span>
+                            </div>                            
+                            <div class="form-group">
+                                <input class="form-control" type="password" placeholder="Contraseña" require formControlName="contrasena" name="contrasena" autocomplete="false">
+                                <span style="color: blueviolet;" *ngIf="formLogin.controls['contrasena'].errors?.['required'] && formLogin.controls['contrasena'].touched">Ingrese la contraseña</span>
+                            </div>
+                            <div class="form-group mt-5">
+                                <button type="submit" class="form-control btn btn-primary" (click)="login()">Iniciar Sesion</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/assets/js/johndoe.js"></script>
+<script src="/assets/vendors/jquery/jquery-3.4.1.js"></script>
+<script src="/assets/vendors/bootstrap/bootstrap.bundle.js"></script>
+<script src="/assets/vendors/bootstrap/bootstrap.affix.js"></script>
+<script src="/assets/vendors/isotope/isotope.pkgd.js"></script>
+<script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCtme10pzgKSPeJVJrG1O3tjR6lk98o4w8&callback=initMap"></script>

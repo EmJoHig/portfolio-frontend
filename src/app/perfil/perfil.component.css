@@ -1,0 +1,14 @@
+.img-container {
+    height: 40px; /* Aquí se define la altura del contenedor */
+    margin-right: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .card-header h4 {
+    margin-bottom: 0;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+  }

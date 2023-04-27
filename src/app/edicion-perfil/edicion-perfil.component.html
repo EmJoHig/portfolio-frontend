@@ -1,0 +1,827 @@
+<nav class="navbar sticky-top navbar-expand-lg navbar-light bg-white" data-spy="affix" data-offset-top="510">
+    <div class="container">
+        <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+            aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse mt-sm-20 navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <img src="/assets/imgs/logoargprog2.png" alt="" class="brand-img" style="width: 25%;">
+                    <span class="brand-title">Argentina Programa </span>
+                  </li>
+                <li class="nav-item">
+                    <!-- <a href="#about" class="nav-link">About</a> -->
+                </li>
+                <li class="nav-item">
+                    <!-- <a href="#resume" class="nav-link">Resume</a> -->
+                </li>
+            </ul>
+            <ul class="navbar-nav brand">
+                <img src="/assets/imgs/imagenperfil.jpg" alt="" class="brand-img">
+                <li class="brand-txt">
+                    <h5 class="brand-title">{{usuario?.nombre}} {{usuario?.apellido}}</h5>
+                    <div class="brand-subtitle">{{usuario?.titulo}}</div>
+                </li>
+            </ul>
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item last-item">
+                    <a href="#" class="nav-link">LOGOUT</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="container-fluid">
+    <div id="about" class="row about-section">
+        <div class="col-lg-4 about-card">
+            <h3 class="font-weight-light">Título</h3>
+            <span class="line mb-5"></span>
+            <h5 class="mb-3">{{usuario?.titulo}}</h5>
+            <!-- <button class="btn btn-outline-danger"><i class="icon-down-circled2 "></i>Descargar CV</button> -->
+        </div>
+        <div class="col-lg-4 about-card">
+            <div class="d-flex justify-content-between align-items-center">
+                <h3 class="font-weight-light mb-0">Información Personal</h3>
+                <a href="#" (click)="cargarFormDatosUsuario(usuario)" class="btn edit-icon" style="font-size: 25px; color: #17a2b8;" data-toggle="modal" data-target="#modalNuevoDatosUsuario">
+                    <i class="ti-pencil"></i>
+                </a>
+            </div>
+            <span class="line mb-5"></span>
+            <ul class="mt40 info list-unstyled">
+                <li><span>Fecha de nacimiento: </span>{{ usuario?.fechaNacimiento | date:'dd/MM/yyyy'}}</li>
+                <li><span>Nombre: </span>{{usuario?.nombre}}</li>
+                <li><span>Apellido: </span>{{usuario?.apellido}}</li>
+            </ul>
+            <ul class="social-icons pt-3">
+                <li class="social-item"><a class="social-link" href="https://www.facebook.com/anto.loky"><i class="ti-facebook"
+                            aria-hidden="true"></i></a></li>
+                <li class="social-item"><a class="social-link" href="https://twitter.com/anto46loky"><i class="ti-twitter"
+                            aria-hidden="true"></i></a></li>
+                <li class="social-item"><a class="social-link" href="https://www.instagram.com/antoneliapaulini"><i class="ti-instagram"
+                            aria-hidden="true"></i></a></li>
+                <!-- <li class="social-item"><a class="social-link" href="#"><i class="ti-github" aria-hidden="true"></i></a>
+                </li> -->
+            </ul>
+        </div>
+        <div class="col-lg-4 about-card">
+            <div class="d-flex justify-content-between align-items-center">
+                <h3 class="font-weight-light mb-0">Intereses</h3>
+                <button class="btn btn-primary btn-sm mb-3" data-toggle="modal" (click)="InitFormInteres()" data-target="#modalNuevoInteres">Nuevo</button>
+            </div>
+            <span class="line mb-5"></span>
+            <ng-container *ngFor="let interes of usuario?.intereses">
+                <div class="row">
+                    <div class="col-1 text-danger pt-1"><i class="ti-widget icon-lg"></i></div>
+                    <div class="col-7 ml-auto mr-3 mt-2">
+                        <h6>{{interes.descripcion}}</h6>
+                    </div>
+                    <div class="col">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <a href="#" (click)="cargarFormInteres(interes)" class="btn edit-icon" style="font-size: 25px; color: #17a2b8;" data-toggle="modal" data-target="#modalNuevoInteres">
+                                <i class="ti-pencil"></i>
+                            </a>
+                            <a href="#" (click)="cargarModalInteres(interes.id)" class="btn text-danger edit-icon" style="font-size: 25px;" data-toggle="modal" data-target="#modalConfirmInteres">
+                                <i class="ti-close"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+            </ng-container>
+        </div>
+    </div>
+</div>
+
+
+<!-- INFORMACION PERSONAL -->
+
+
+<div class="modal fade" id="modalNuevoDatosUsuario" tabindex="-1" role="dialog" aria-labelledby="modalNuevoDatosUsuarioLabel" aria-hidden="true" #modalNuevoDatosUsuario>
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalNuevoDatosUsuarioLabel">Editar datos usuario</h5>
+        </div>
+        <div class="modal-body">
+            <form action="" [formGroup]="formDatosUsuario">
+                <div class="form-group">
+                    <input class="form-control" type="text" placeholder="nombre" pinputText required formControlName="nombre" name="nombre">
+                    <span style="color: blueviolet;" *ngIf="formDatosUsuario.controls['nombre'].errors?.['required'] && formDatosUsuario.controls['nombre'].touched">
+                        Ingrese nombre
+                    </span>
+                </div>
+
+                <div class="form-group">
+                    <input class="form-control" type="text" placeholder="apellido" pinputText required formControlName="apellido" name="descripcion">
+                    <span style="color: blueviolet;" *ngIf="formDatosUsuario.controls['apellido'].errors?.['required'] && formDatosUsuario.controls['apellido'].touched">
+                        Ingrese apellido
+                    </span>
+                </div>
+
+                <div class="form-group">
+                    <input type="date" class="form-control" placeholder="Fecha inicio" formControlName="fechaNacimiento" name="fechaNacimiento">
+                    <span style="color: blueviolet;" *ngIf="formDatosUsuario.controls['fechaNacimiento'].errors?.['required'] && formDatosUsuario.controls['fechaNacimiento'].touched">
+                        Fecha naciminento
+                    </span>
+                </div>
+                
+                <div class="form-group">
+                    <input class="form-control" type="text" placeholder="titulo" pinputText required formControlName="titulo" name="titulo">
+                    <span style="color: blueviolet;" *ngIf="formDatosUsuario.controls['titulo'].errors?.['required'] && formDatosUsuario.controls['titulo'].touched">
+                        Ingrese titulo
+                    </span>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" >Cerrar</button>
+                    <button type="submit" class="btn btn-primary" (click)="guardarDatosUsuario()">Guardar cambios</button>
+                </div>
+            </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- <div class="modal fade" id="modalConfirmInteres" tabindex="-1" role="dialog" aria-labelledby="modalConfirmInfoPersonalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalConfirmInteresLabel">Eliminar Interes</h5>
+        </div>
+        <div class="modal-body">
+            <p>Desea eliminar el Interes?</p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-success" data-dismiss="modal" (click)="eliminarInfoPersonal()" data-dismiss="modal">Aceptar</button>
+        </div>
+      </div>
+    </div>
+  </div> -->
+
+
+
+
+
+
+
+<!-- INTERESES -->
+
+<div class="modal fade" id="modalNuevoInteres" tabindex="-1" role="dialog" aria-labelledby="modalNuevoInteresLabel" aria-hidden="true" #modalNuevoInteres>
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalNuevoInteresLabel">Nuevo Interes</h5>
+        </div>
+        <div class="modal-body">
+            <form action="" [formGroup]="formInteres">
+                <div class="form-group">
+                    <input class="form-control" type="text" placeholder="descripcion" pinputText required formControlName="descripcion" name="descripcion">
+                    <span style="color: blueviolet;" *ngIf="formInteres.controls['descripcion'].errors?.['required'] && formInteres.controls['descripcion'].touched">
+                        Ingrese descripcion
+                    </span>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="submit" class="btn btn-primary" (click)="guardarInteres()">Guardar cambios</button>
+                </div>
+            </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="modal fade" id="modalConfirmInteres" tabindex="-1" role="dialog" aria-labelledby="modalConfirmInteresLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalConfirmInteresLabel">Eliminar Interes</h5>
+        </div>
+        <div class="modal-body">
+            <p>Desea eliminar el Interes?</p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-success" data-dismiss="modal" (click)="eliminarInteres()" data-dismiss="modal">Aceptar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+
+<!-- SECCION EXPERIENCIA ---------------------------------->
+
+<section class="section" id="resume">
+    <div class="container">
+        <h2 class="mb-4">Experiencia</h2>
+        <button class="btn btn-primary btn-sm mb-3" data-toggle="modal" (click)="InitFormExperiencia()" data-target="#modalNuevaExperiencia">Nueva</button>
+        <div class="row">
+            <ng-container *ngFor="let exp of usuario?.experiencias">
+                <div class="col-md-6 col-lg-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="mt-2">
+                                <h4 style="width: 70%;">{{exp.titulo}}</h4>
+                                <span class="line"></span>
+                                <div class="img-container float-right" style="max-width: 100px;">
+                                    <img src="../assets/imgs/blog2.jpg" class="img-fluid rounded-circle"
+                                        alt="Descripción de la imagen">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <h6 class="title text-danger">{{exp.fechainicio | date:'yyyy'}} - {{exp.fechafin |
+                                date:'yyyy'}}</h6>
+                            <P class="subtitle">{{exp.actividades}}</P>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <ul class="social-icons">
+                                <li class="social-item">
+                                    <a href="#" (click)="cargarFormExperiencia(exp)" class="btn edit-icon" style="font-size: 25px; color: #17a2b8;" data-toggle="modal" data-target="#modalNuevaExperiencia">
+                                        <i class="ti-pencil"></i>
+                                    </a>
+                                </li>
+                                <li class="social-item">
+                                    <a href="#" (click)="cargarModalExperiencia(exp.id)" class="btn edit-icon text-danger" style="font-size: 25px;" data-toggle="modal" data-target="#modalConfirmExperiencia">
+                                        <i class="ti-close"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+        </div>
+    </div>
+</section>
+
+
+
+<!-- MODAL EXP NUEVA-->
+<div class="modal fade" id="modalNuevaExperiencia" tabindex="-1" role="dialog" aria-labelledby="modalNuevaExperienciaLabel" aria-hidden="true" #modalNuevaExperiencia>
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalNuevaExperienciaLabel">Nueva Experiencia</h5>
+        </div>
+        <div class="modal-body">
+            <form action="" [formGroup]="formExperiencia">
+                <div class="form-group">
+                    <input class="form-control" type="text" placeholder="titulo" pinputText required formControlName="titulo" name="titulo">
+                    <span style="color: blueviolet;" *ngIf="formExperiencia.controls['titulo'].errors?.['required'] && formExperiencia.controls['titulo'].touched">
+                        Ingrese titulo
+                    </span>
+                </div>
+                <div class="form-group">
+                    <input type="date" class="form-control" placeholder="Fecha inicio" formControlName="fechainicio" name="fechainicio">
+                    <span style="color: blueviolet;" *ngIf="formExperiencia.controls['fechainicio'].errors?.['required'] && formExperiencia.controls['fechainicio'].touched">
+                        Fecha Inicio
+                    </span>
+                </div>
+                <div class="form-group">
+                    <input type="date" class="form-control" placeholder="Fecha Fin" formControlName="fechafin" name="fechafin">
+                    <span style="color: blueviolet;" *ngIf="formExperiencia.controls['fechafin'].errors?.['required'] && formExperiencia.controls['fechafin'].touched">
+                        Fecha Fin
+                    </span>
+                </div>
+                <div class="form-group">
+                    <input class="form-control" type="text" placeholder="actividades" pinputText required formControlName="actividades" name="actividades">
+                    <span style="color: blueviolet;" *ngIf="formExperiencia.controls['actividades'].errors?.['required'] && formExperiencia.controls['actividades'].touched">
+                        Ingrese actividades
+                    </span>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="submit" class="btn btn-primary" (click)="guardarExperiencia()">Guardar cambios</button>
+                </div>
+            </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- MODAL CONFIRMACION EXP -->
+  <div class="modal fade" id="modalConfirmExperiencia" tabindex="-1" role="dialog" aria-labelledby="modalConfirmExperienciaLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalConfirmExperienciaLabel">Eliminar Experiencia</h5>
+        </div>
+        <div class="modal-body">
+            <p>Desea eliminar la Experiencia?</p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-success" data-dismiss="modal" (click)="eliminarExperiencia()" data-dismiss="modal">Aceptar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+<!-- SECCION EDUCACION ---------------------------------->
+
+
+<section class="section" id="blog" style="padding: 0;">
+    <div class="container">
+        <h2 class="mb-4">Educación</h2>
+        <button class="btn btn-primary btn-sm mb-3" data-toggle="modal" (click)="InitFormEducacion()" data-target="#modalNuevaEducacion">Nueva</button>
+        <div class="row">
+            <ng-container *ngFor="let educ of usuario?.educaciones">
+                <div class="col-md-6 col-lg-8">
+                    <div class="blog-card" style="min-height: 200px;">
+                        <div class="img-holder">
+                            <img src="/assets/imgs/blog1.jpg"
+                                alt="Download free bootstrap 4 landing page, free boootstrap 4 templates, Download free bootstrap 4.1 landing page, free boootstrap 4.1.1 templates, meyawo Landing page">
+                        </div>
+                        <div class="content-holder">
+                            <h3 class="title" style="font-size: 20px;">{{educ.nombre}}</h3>
+                            <h5 style="font-size: 20px;">{{educ.titulocarrera}}</h5>
+                            <h6 class="title text-danger">{{educ.fechainicio | date:'yyyy'}} - {{educ.fechafin |
+                                date:'yyyy'}}</h6>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <a href="#" (click)="cargarFormEducacion(educ)" class="btn edit-icon" style="font-size: 25px; color: #17a2b8;" data-toggle="modal" data-target="#modalNuevaEducacion">
+                                <i class="ti-pencil"></i>
+                            </a>
+
+                            <a href="#" (click)="cargarModalEducacion(educ.id)" class="btn edit-icon text-danger" style="font-size: 25px;" data-toggle="modal" data-target="#modalConfirmEducacion">
+                                <i class="ti-close"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+        </div>
+    </div>
+</section>
+
+
+<!-- MODAL EUDCIACION NUEVA-->
+<div class="modal fade" id="modalNuevaEducacion" tabindex="-1" role="dialog" aria-labelledby="modalNuevaEducacionLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalNuevaEducacionLabel">Nueva Educacion</h5>
+        </div>
+        <div class="modal-body">
+            <form action="" [formGroup]="formEducacion">
+                <div class="form-group">
+                    <input class="form-control" type="text" placeholder="Nombre Educacion" pinputText required formControlName="nombre" name="nombre">
+                    <span style="color: blueviolet;" *ngIf="formEducacion.controls['nombre'].errors?.['required'] && formEducacion.controls['nombre'].touched">
+                        Ingrese Nombre Educacion
+                    </span>
+                </div>
+                <div class="form-group">
+                    <input type="date" class="form-control" placeholder="Fecha inicio" formControlName="fechainicio" name="fechainicio">
+                    <span style="color: blueviolet;" *ngIf="formEducacion.controls['fechainicio'].errors?.['required'] && formEducacion.controls['fechainicio'].touched">
+                        Fecha Inicio
+                    </span>
+                </div>
+                <div class="form-group">
+                    <input type="date" class="form-control" placeholder="Fecha Fin" formControlName="fechafin" name="fechafin">
+                    <span style="color: blueviolet;" *ngIf="formEducacion.controls['fechafin'].errors?.['required'] && formEducacion.controls['fechafin'].touched">
+                        Fecha Fin
+                    </span>
+                </div>
+                <div class="form-group">
+                    <input class="form-control" type="text" placeholder="Titulo Carrera" pinputText required formControlName="titulocarrera" name="titulocarrera">
+                    <span style="color: blueviolet;" *ngIf="formEducacion.controls['titulocarrera'].errors?.['required'] && formEducacion.controls['titulocarrera'].touched">
+                        Ingrese titulo o carrera
+                    </span>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="submit" class="btn btn-primary" data-dismiss="modal" (click)="guardarNuevaEducacion()">Guardar cambios</button>
+                </div>
+            </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- MODAL CONFIRMACION EUDCIACION -->
+  <div class="modal fade" id="modalConfirmEducacion" tabindex="-1" role="dialog" aria-labelledby="modalConfirmEducacionLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalConfirmEducacionLabel">Eliminar Educacion</h5>
+        </div>
+        <div class="modal-body">
+            <p>Desea eliminar la Educacion?</p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-success" data-dismiss="modal" (click)="eliminarEducacion()" data-dismiss="modal">Aceptar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
+
+<!-- SECCION SKILSS ---------------------------------->
+
+<section class="section" id="blog">
+    <div class="container">
+        <div id="about" class="row">
+            <div class="col-lg-6 about-card">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="pull-left">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h3 class="font-weight-light mb-0">Hard & Soft Skills</h3>
+                                <ul class="social-icons pt-3">
+                                    <li class="social-item">
+                                        <button class="btn btn-primary btn-sm mt-2" data-toggle="modal" (click)="InitFormSkill()" data-target="#modalNuevaSkill">Nueva</button>
+                                    </li>
+                                </ul>
+                            </div>
+                            <span class="line"></span>
+                        </div>
+                    </div>
+                    <div class="card-body pb-2">
+                        <ng-container *ngFor="let s of usuario?.skills">
+                            <div class="row">
+                                <div class="col-lg-9">
+                                    <h6>{{s.nombre}}</h6>
+                                    <div class="progress mb-3 d-flex" style="width: 100%;">
+                                      <div class="progress-bar bg-danger" role="progressbar" [style.width.%]="s.porcentaje"
+                                           aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <a href="#" (click)="cargarFormSkill(s)" class="btn edit-icon" style="font-size: 25px; color: #17a2b8;" data-toggle="modal" data-target="#modalNuevaSkill">
+                                            <i class="ti-pencil"></i>
+                                        </a>
+                                        <a href="#" (click)="cargarModalSkill(s.id)" class="btn text-danger edit-icon" style="font-size: 25px;" data-toggle="modal" data-target="#modalConfirmSkill">
+                                            <i class="ti-close"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                          </ng-container>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 about-card">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="pull-left">
+                            
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h3 class="font-weight-light mb-0">Idiomas</h3>
+                                <ul class="social-icons pt-3">
+                                    <li class="social-item">
+                                        <button class="btn btn-primary btn-sm mt-2" (click)="InitFormIdioma()" data-toggle="modal" data-target="#modalNuevoIdioma">Nuevo</button>
+                                    </li>
+                                    
+                                </ul>
+                            </div>
+                            <span class="line"></span>
+                        </div>
+                    </div>
+                    <div class="card-body pb-2">
+                        <ng-container *ngFor="let i of usuario?.idiomas">
+                            <div class="row">
+                                <div class="col-lg-9">
+                                    <h6>{{i.nombre}}</h6>
+                                    <div class="progress mb-3 d-flex" style="width: 90%;">
+                                      <div class="progress-bar bg-danger" role="progressbar" [style.width.%]="i.porcentaje"
+                                           aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <a href="#" (click)="cargarFormIdioma(i)" class="btn edit-icon" style="font-size: 25px; color: #17a2b8;" data-toggle="modal" data-target="#modalEditarIdioma">
+                                            <i class="ti-pencil"></i>
+                                        </a>
+                                        <a href="#" (click)="cargarModalIdioma(i.id)" class="btn text-danger edit-icon" style="font-size: 25px; color: #17a2b8;" data-toggle="modal" data-target="#modalConfirmIdioma">
+                                            <i class="ti-close"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                          </ng-container>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- MODAL SKILSS NUEVA-->
+<div class="modal fade" id="modalNuevaSkill" tabindex="-1" role="dialog" aria-labelledby="modalNuevaSkillLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalNuevaSkillLabel">Nueva Skill</h5>
+        </div>
+        <div class="modal-body">
+            <form action="" [formGroup]="formSkill">
+                <div class="form-group">
+                    <input class="form-control" type="text" placeholder="Nombre SKill" pinputText required formControlName="nombre" name="nombre">
+                    <span style="color: blueviolet;" *ngIf="formSkill.controls['nombre'].errors?.['required'] && formSkill.controls['nombre'].touched">
+                        Ingrese Nombre SKill
+                    </span>
+                </div>
+                <div class="form-group">
+                    <input class="form-control" type="number" placeholder="Porcentaje" pinputText formControlName="porcentaje" name="porcentaje">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="submit" class="btn btn-primary" (click)="guardarSkill()">Guardar cambios</button>
+                </div>
+            </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- MODAL SKILSS EDITAR-->
+  <!-- <div class="modal fade" id="modalEditarSkill" tabindex="-1" role="dialog" aria-labelledby="modalEditarSkillLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalEditarSkillLabel">Editar Skill</h5>
+        </div>
+        <div class="modal-body">
+            <form action="" [formGroup]="formSkill">
+                <div class="form-group">
+                    <input class="form-control" type="text" placeholder="Nombre SKill" pinputText required formControlName="nombre" name="nombre">
+                    <span style="color: blueviolet;" *ngIf="formSkill.controls['nombre'].errors?.['required'] && formSkill.controls['nombre'].touched">
+                        Ingrese Nombre SKill
+                    </span>
+                </div>
+                <div class="form-group">
+                    <input class="form-control" type="number" placeholder="Porcentaje" pinputText formControlName="porcentaje" name="porcentaje">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="submit" class="btn btn-primary" data-dismiss="modal" (click)="guardarEdicionSkill()">Guardar cambios</button>
+                </div>
+            </form>
+        </div>
+      </div>
+    </div>
+  </div> -->
+
+  <!-- MODAL CONFIRMACION SKILSS -->
+  <div class="modal fade" id="modalConfirmSkill" tabindex="-1" role="dialog" aria-labelledby="modalConfirmSkillLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalConfirmSkillLabel">Eliminar SKill</h5>
+        </div>
+        <div class="modal-body">
+            <p>Desea eliminar la SKill?</p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-success" data-dismiss="modal" (click)="eliminarSkill()" data-dismiss="modal">Aceptar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+<!-- SECCION IDIOMAS ---------------------------------->
+<!-- MODAL IDIOMA NUEVA-->
+<div class="modal fade" id="modalNuevoIdioma" tabindex="-1" role="dialog" aria-labelledby="modalNuevoIdiomaLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalNuevaIdiomaLabel">Nuevo idioma</h5>
+        </div>
+        <div class="modal-body">
+            <form action="" [formGroup]="formIdioma">
+                <div class="form-group">
+                    <input class="form-control" type="text" placeholder="Nombre idioma" pinputText required formControlName="nombre" name="nombre">
+                    <span style="color: blueviolet;" *ngIf="formIdioma.controls['nombre'].errors?.['required'] && formIdioma.controls['nombre'].touched">
+                        Ingrese Nombre idioma
+                    </span>
+                </div>
+                <div class="form-group">
+                    <input class="form-control" type="number" placeholder="Porcentaje" pinputText formControlName="porcentaje" name="porcentaje">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="submit" class="btn btn-primary" data-dismiss="modal" (click)="guardarNuevoIdioma()">Guardar cambios</button>
+                </div>
+            </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- MODAL IDIOMA EDITAR-->
+  <div class="modal fade" id="modalEditarIdioma" tabindex="-1" role="dialog" aria-labelledby="modalEditarIdiomaLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalEditarIdiomaLabel">Editar idioma</h5>
+        </div>
+        <div class="modal-body">
+            <form action="" [formGroup]="formIdioma">
+                <div class="form-group">
+                    <input class="form-control" type="text" placeholder="Nombre Idioma" pinputText required formControlName="nombre" name="nombre">
+                    <span style="color: blueviolet;" *ngIf="formIdioma.controls['nombre'].errors?.['required'] && formSkill.controls['nombre'].touched">
+                        Ingrese Nombre idioma
+                    </span>
+                </div>
+                <div class="form-group">
+                    <input class="form-control" type="number" placeholder="Porcentaje" pinputText formControlName="porcentaje" name="porcentaje">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="submit" class="btn btn-primary" data-dismiss="modal" (click)="guardarEdicionIdioma()">Guardar cambios</button>
+                </div>
+            </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- MODAL CONFIRMACION IDIOMA -->
+  <div class="modal fade" id="modalConfirmIdioma" tabindex="-1" role="dialog" aria-labelledby="modalConfirmIdiomaLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalConfirmIdiomaLabel">Eliminar idioma</h5>
+        </div>
+        <div class="modal-body">
+            <p>Desea eliminar el idioma?</p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-success" data-dismiss="modal" (click)="eliminarIdioma()" data-dismiss="modal">Aceptar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+<!-- SECCION PROYECTOS ---------------------------------->
+
+<section class="section" id="service">
+    <div class="container">
+        <h2 class="mb-5 pb-4">Proyectos</h2>
+        <div class="row">
+            <ng-container *ngFor="let proy of usuario?.proyectos">
+                <div class="col-md-4 col-sm-6">
+                    <div class="card mb-5" style="min-height: 420px;">
+                        <div class="card-header has-icon">
+                            <img src="/assets/imgs/blog1.jpg" style="width:100%;">
+                        </div>
+                        <div class="card-body px-4 py-3">
+                            <h6 class="title text-danger" style="float: right;">{{proy.fecha | date:'yyyy'}}</h6>
+                            <h5 class="mb-3 card-title text-dark">{{proy.nombre}}</h5>
+                            <P class="subtitle">{{proy.descripcion}}</P>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <a href={{proy.link}} class="read-more">LINK REPOSITORIO <i
+                                    class="ti-angle-double-right"></i></a>
+                                <ul class="social-icons pt-3">
+                                    <!-- <li class="social-item"><a href="#" class="edit-icon mr-3"
+                                            style="font-size: 25px;color: #17a2b8;"><i class="ti-pencil"></i></a></li> -->
+                                    <li class="social-item">
+                                        <a href="#" (click)="cargarFormProy(proy)" class="btn edit-icon" style="font-size: 25px; color: #17a2b8;" data-toggle="modal" data-target="#exampleModal">
+                                            <i class="ti-pencil"></i>
+                                        </a>
+                                    </li>
+                                    <li class="social-item">
+                                        <a href="#" (click)="cargarModalProy(proy.id)" class="btn edit-icon text-danger" style="font-size: 25px;" data-toggle="modal" data-target="#modalConfirm" data-id="{{ proy.id }}">
+                                            <i class="ti-close"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+        </div>
+    </div>
+</section>
+
+
+
+
+ <!-- MODAL PROYECTO -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Título del modal</h5>
+          <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+            <span aria-hidden="true">&times;</span>
+          </button> -->
+        </div>
+        <div class="modal-body">
+          
+            <form action="" [formGroup]="formProyecto">
+                <div class="form-group">
+                    <input class="form-control" type="text" placeholder="Nombre Proyecto" pinputText required formControlName="nombre" name="nombre">
+                    <span style="color: blueviolet;" *ngIf="formProyecto.controls['nombre'].errors?.['required'] && formProyecto.controls['nombre'].touched">
+                        Ingrese Nombre Proyecto
+                    </span>
+                </div>
+                <div class="form-group">
+                    <input type="date" class="form-control" placeholder="Fecha" formControlName="fecha" name="fecha">
+                    <span style="color: blueviolet;" *ngIf="formProyecto.controls['fecha'].errors?.['required'] && formProyecto.controls['fecha'].touched">
+                        Ingrese Fecha
+                    </span>
+                </div>
+
+                <div class="form-group">
+                    <textarea type="text" class="form-control" placeholder="Descripcion" formControlName="descripcion" name="descripcion"  rows="3"></textarea>
+                    <span style="color: blueviolet;" *ngIf="formProyecto.controls['descripcion'].errors?.['required'] && formProyecto.controls['descripcion'].touched">
+                        Ingrese Descripcion
+                    </span>
+                </div>
+                
+                <div class="form-group">
+                    <input class="form-control" type="text" placeholder="Link repositorio" pinputText formControlName="link" name="link">
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="submit" class="btn btn-primary" data-dismiss="modal"(click)="guardarEdicionProyecto()">Guardar cambios</button>
+                </div>
+            </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL CONFIRMACION -->
+
+  <div class="modal fade" id="modalConfirm" tabindex="-1" role="dialog" aria-labelledby="exampleModalConfirm" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Eliminar Proyecto</h5>
+        </div>
+        <div class="modal-body">
+            <p>Desea eliminar el proyecto?</p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-success" (click)="eliminarProyecto()" data-dismiss="modal">Aceptar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
+  <footer class="footer py-3">
+    <div class="container">
+      <p class="small mb-0 text-light">
+        &copy;
+        <script>document.write(new Date().getFullYear())</script> Creado por <a
+          href="https://www.linkedin.com/in/antonelia-paulini-0741a71b9" target="_blank"><span class="text-danger"
+            title="Antonelia Paulini">Antonelia Paulini</span></a>
+      </p>
+    </div>
+  </footer>
+
+<script src="/assets/js/johndoe.js"></script>
+<script src="/assets/vendors/jquery/jquery-3.4.1.js"></script>
+<script src="/assets/vendors/bootstrap/bootstrap.bundle.js"></script>
+<script src="/assets/vendors/bootstrap/bootstrap.affix.js"></script>
+<script src="/assets/vendors/isotope/isotope.pkgd.js"></script>
+<script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCtme10pzgKSPeJVJrG1O3tjR6lk98o4w8&callback=initMap"></script>
