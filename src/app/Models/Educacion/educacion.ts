@@ -4,5 +4,5 @@ export class Educacion {
     fechainicio: Date;
     fechafin: Date;
     titulocarrera: string;
-    logo: string[];
+    logo: string;
 }

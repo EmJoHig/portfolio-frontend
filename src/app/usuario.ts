@@ -13,10 +13,9 @@ export class Usuario {
     nombreusuario: string;
     contrasena: string;
     informacionPersonal: string;
-    imagenUsuario: string[];
-    imagenbanner: string[];
+    imagenUsuario: string;
     fechaNacimiento: Date;
-    // mail:string;
+    mail:string;
     intereses:Interes[];
     experiencias:Experiencia[];
     educaciones:Educacion[];

@@ -8,6 +8,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { PerfilComponent } from './perfil/perfil.component';
 import { EdicionPerfilComponent } from './edicion-perfil/edicion-perfil.component';
+import { initializeApp,provideFirebaseApp } from '@angular/fire/app';
+import { environment } from '../environments/environment';
+import { provideStorage,getStorage } from '@angular/fire/storage';
 
 @NgModule({
   declarations: [
@@ -22,6 +25,8 @@ import { EdicionPerfilComponent } from './edicion-perfil/edicion-perfil.componen
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
+    provideFirebaseApp(() => initializeApp(environment.firebase)),
+    provideStorage(() => getStorage()),
     // CommonModule
   ],
   providers: [DatePipe],

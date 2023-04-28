@@ -10,6 +10,7 @@ import { Interes } from '../Models/Interes/interes';
 
 import { UsuarioService } from '../usuario.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { ImageService } from '../image.service';
 
 @Component({
   selector: 'app-edicion-perfil',
@@ -21,6 +22,7 @@ export class EdicionPerfilComponent implements OnInit {
   @ViewChild('modalNuevaExperiencia') modal: ElementRef;
   @ViewChild('modalNuevoInteres') modalInteres: ElementRef;
   @ViewChild('modalNuevoDatosUsuario') modalDatosUsuario: ElementRef;
+  @ViewChild('modalNuevaSkill') modalDatosSkills: ElementRef;
 
   usuario: Usuario;
   id: number;
@@ -42,15 +44,16 @@ export class EdicionPerfilComponent implements OnInit {
   formInteres: FormGroup = new FormGroup({});
   formDatosUsuario: FormGroup = new FormGroup({});
 
-  constructor(private fb: FormBuilder, private route: ActivatedRoute, private usuarioServicio: UsuarioService, private router: Router,private backdropRef: ElementRef) { }
+  constructor(private fb: FormBuilder, private route: ActivatedRoute, private usuarioServicio: UsuarioService, private router: Router,private backdropRef: ElementRef, public imageService: ImageService) { }
 
   ngOnInit(): void {
+    this.imageService.url = "";
     this.id = this.route.snapshot.params['id'];
     // console.log('id desde edicion perfil');
     // console.log(this.id);
     this.usuarioServicio.obtenerUsuarioPorId(this.id).subscribe(dato => {
       this.usuario = dato;
-      // console.log(dato);
+      //console.log(dato);
     }, error => console.log(error));
 
     this.formProyecto = this.fb.group({
@@ -76,6 +79,7 @@ export class EdicionPerfilComponent implements OnInit {
       fechainicio: ['', Validators.required],
       fechafin: ['', Validators.required],
       titulocarrera: ['', Validators.required],
+      logo: [''],
     });
 
     this.formExperiencia = this.fb.group({
@@ -83,6 +87,7 @@ export class EdicionPerfilComponent implements OnInit {
       fechainicio: ['', Validators.required],
       fechafin: ['', Validators.required],
       actividades: ['', Validators.required],
+      imagen: [''],
     });
 
     this.formInteres = this.fb.group({
@@ -94,6 +99,7 @@ export class EdicionPerfilComponent implements OnInit {
       apellido: ['', Validators.required],
       fechaNacimiento: ['', Validators.required],
       titulo: ['', Validators.required],
+      imagenUsuario: [''],
     });
   }
 
@@ -110,6 +116,8 @@ export class EdicionPerfilComponent implements OnInit {
     }
 
     // this.formProyecto.value.id = this.id;
+    //console.log(this.formProyecto.value)
+    this.formProyecto.value.imagen = this.imageService.url;
     this.usuarioServicio.actualizarProyectoUsuario(this.id, this.formProyecto.value).subscribe(dato => {
       //busco de nuevo el usuario para ver sus actualizaciones
       this.usuarioServicio.obtenerUsuarioPorId(this.id).subscribe(dato => {
@@ -206,33 +214,27 @@ export class EdicionPerfilComponent implements OnInit {
 
   }
 
-
-
-
-
-
-
   
   //GUARDAR EDICION SKILL
-  guardarEdicionSkill() {
-    if (this.formSkill.invalid) {
-      this.formSkill.markAllAsTouched();
-      for (const key in this.formSkill.controls) {
-        this.formSkill.controls[key].markAsDirty();
-      }
-      return;
-    }
-    // this.formSkill.value.id = this.id;
-    // console.log(this.formSkill.value);
-    this.usuarioServicio.actualizarSkillUsuario(this.id, this.formSkill.value).subscribe(dato => {
-      //busco de nuevo el usuario para ver sus actualizaciones
-      this.usuarioServicio.obtenerUsuarioPorId(this.id).subscribe(dato => {
-        this.usuario = dato;
-      }, error => console.log(error));
+  // guardarEdicionSkill() {
+  //   if (this.formSkill.invalid) {
+  //     this.formSkill.markAllAsTouched();
+  //     for (const key in this.formSkill.controls) {
+  //       this.formSkill.controls[key].markAsDirty();
+  //     }
+  //     return;
+  //   }
+  //   // this.formSkill.value.id = this.id;
+    
+  //   this.usuarioServicio.actualizarSkillUsuario(this.id, this.formSkill.value).subscribe(dato => {
+  //     //busco de nuevo el usuario para ver sus actualizaciones
+  //     this.usuarioServicio.obtenerUsuarioPorId(this.id).subscribe(dato => {
+  //       this.usuario = dato;
+  //     }, error => console.log(error));
 
-    }, error => console.log(error));
+  //   }, error => console.log(error));
 
-  }
+  // }
 
   cargarFormSkill(skill: Skill) {
     this.formSkill = this.fb.group({
@@ -341,7 +343,7 @@ export class EdicionPerfilComponent implements OnInit {
   //EDUACION
 
   //GUARDAR NUEVO EDUACION
-  guardarNuevaEducacion() {
+  guardarEducacion() {
     if (this.formEducacion.invalid) {
       this.formEducacion.markAllAsTouched();
       for (const key in this.formEducacion.controls) {
@@ -349,35 +351,51 @@ export class EdicionPerfilComponent implements OnInit {
       }
       return;
     }
-    this.usuarioServicio.nuevaEducacionUsuario(this.id, this.formEducacion.value).subscribe(dato => {
-      //busco de nuevo el usuario para ver sus actualizaciones
-      this.usuarioServicio.obtenerUsuarioPorId(this.id).subscribe(dato => {
-        this.usuario = dato;
+    if (this.formEducacion.value.id != '') {
+      //EDICION
+      this.formEducacion.value.logo = this.imageService.url;
+      this.usuarioServicio.actualizarEducacionUsuario(this.id, this.formEducacion.value).subscribe(dato => {
+        //busco de nuevo el usuario para ver sus actualizaciones
+        this.usuarioServicio.obtenerUsuarioPorId(this.id).subscribe(dato => {
+          this.usuario = dato;
+        }, error => console.log(error));
       }, error => console.log(error));
 
-    }, error => console.log(error));
-
-  }
-
-  //GUARDAR EDICION EDUACION
-  guardarEdicionEducacion() {
-    if (this.formEducacion.invalid) {
-      this.formEducacion.markAllAsTouched();
-      for (const key in this.formEducacion.controls) {
-        this.formEducacion.controls[key].markAsDirty();
-      }
-      return;
+    } else {
+      //NUEVO
+      this.formEducacion.value.imagen = this.imageService.url;
+      this.usuarioServicio.nuevaEducacionUsuario(this.id, this.formEducacion.value).subscribe(dato => {
+        //busco de nuevo el usuario para ver sus actualizaciones
+        this.usuarioServicio.obtenerUsuarioPorId(this.id).subscribe(dato => {
+          this.usuario = dato;
+        }, error => console.log(error));
+      }, error => console.log(error));
     }
-    // console.log(this.formEducacion.value)
-    this.usuarioServicio.actualizarEducacionUsuario(this.id, this.formEducacion.value).subscribe(dato => {
-      //busco de nuevo el usuario para ver sus actualizaciones
-      this.usuarioServicio.obtenerUsuarioPorId(this.id).subscribe(dato => {
-        this.usuario = dato;
-      }, error => console.log(error));
 
-    }, error => console.log(error));
+    this.cerrarModal();
+    this.imageService.url = "";
 
   }
+
+  //GUARDAR EDICION EDUACION  this.formExperiencia.value.imagen = this.imageService.url;
+  // guardarEdicionEducacion() {
+  //   if (this.formEducacion.invalid) {
+  //     this.formEducacion.markAllAsTouched();
+  //     for (const key in this.formEducacion.controls) {
+  //       this.formEducacion.controls[key].markAsDirty();
+  //     }
+  //     return;
+  //   }
+  //   // console.log(this.formEducacion.value)
+  //   this.usuarioServicio.actualizarEducacionUsuario(this.id, this.formEducacion.value).subscribe(dato => {
+  //     //busco de nuevo el usuario para ver sus actualizaciones
+  //     this.usuarioServicio.obtenerUsuarioPorId(this.id).subscribe(dato => {
+  //       this.usuario = dato;
+  //     }, error => console.log(error));
+
+  //   }, error => console.log(error));
+
+  // }
 
   cargarFormEducacion(educacion: Educacion) {
 
@@ -391,6 +409,7 @@ export class EdicionPerfilComponent implements OnInit {
       fechainicio: [fechaISOi, Validators.required],
       fechafin: [fechaISOf, Validators.required],
       titulocarrera: [educacion?.titulocarrera, Validators.required],
+      logo: [educacion?.logo],
     });
   }
 
@@ -405,6 +424,7 @@ export class EdicionPerfilComponent implements OnInit {
       fechainicio: ['', Validators.required],
       fechafin: ['', Validators.required],
       titulocarrera: ['', Validators.required],
+      logo: [''],
     });
   }
 
@@ -433,8 +453,17 @@ export class EdicionPerfilComponent implements OnInit {
     }
     else
     {
+      // console.log('this.formExperiencia.value')
+      // console.log(this.formExperiencia.value)
+      // console.log('this.imageService.url')
+      // console.log(this.imageService.url)
+
+
       if (this.formExperiencia.value.id != '') {
         //EDICION
+        this.formExperiencia.value.imagen = this.imageService.url;
+        console.log('this.imageService.url');
+        console.log(this.imageService.url);
         this.usuarioServicio.actualizarExperienciaUsuario(this.id, this.formExperiencia.value).subscribe(dato => {
           //busco de nuevo el usuario para ver sus actualizaciones
           this.usuarioServicio.obtenerUsuarioPorId(this.id).subscribe(dato => {
@@ -444,6 +473,7 @@ export class EdicionPerfilComponent implements OnInit {
   
       } else {
         //NUEVO
+        this.formExperiencia.value.imagen = this.imageService.url;
         this.usuarioServicio.nuevaExperienciaUsuario(this.id, this.formExperiencia.value).subscribe(dato => {
           //busco de nuevo el usuario para ver sus actualizaciones
           this.usuarioServicio.obtenerUsuarioPorId(this.id).subscribe(dato => {
@@ -453,6 +483,7 @@ export class EdicionPerfilComponent implements OnInit {
       }
 
       this.cerrarModal();
+      this.imageService.url = "";
     }
   }
 
@@ -490,6 +521,7 @@ export class EdicionPerfilComponent implements OnInit {
       fechainicio: [fechaISOi, Validators.required],
       fechafin: [fechaISOf, Validators.required],
       actividades: [experiencia?.actividades, Validators.required],
+      imagen: [experiencia?.imagen]
     });
   }
 
@@ -504,6 +536,7 @@ export class EdicionPerfilComponent implements OnInit {
       fechainicio: ['', Validators.required],
       fechafin: ['', Validators.required],
       actividades: ['', Validators.required],
+      imagen: ['', ],
     });
   }
 
@@ -520,7 +553,7 @@ export class EdicionPerfilComponent implements OnInit {
 
   //INTERESES
 
-  //GUARDAR NUEVO EXPERIENCIA
+  //GUARDAR NUEVO INTERESES
   guardarInteres() {
     if (this.formInteres.invalid) {
       this.formInteres.markAllAsTouched();
@@ -598,10 +631,15 @@ guardarDatosUsuario() {
   {
     if (this.formDatosUsuario.value.id != '') {
       //EDICION
+      // console.log("entra edicion")
+      // console.log(this.imageService.url)
+      this.formDatosUsuario.value.imagenUsuario = this.imageService.url;
       this.usuarioServicio.actualizarDatosUsuario(this.id, this.formDatosUsuario.value).subscribe(dato => {
         //busco de nuevo el usuario para ver sus actualizaciones
         this.usuarioServicio.obtenerUsuarioPorId(this.id).subscribe(dato => {
           this.usuario = dato;
+          this.usuario.imagenUsuario = this.imageService.url;
+          this.imageService.url = "";
         }, error => console.log(error));
       }, error => console.log(error));
 
@@ -626,6 +664,7 @@ cargarFormDatosUsuario(usuario: Usuario) {
     apellido: [usuario?.apellido, Validators.required],
     fechaNacimiento: [fechaISO, Validators.required],
     titulo: [usuario?.titulo, Validators.required],
+    imagenUsuario: [usuario?.imagenUsuario,Validators.required],
   });
 }
 
@@ -636,6 +675,7 @@ InitFormDatosUsuario() {
     apellido: ['', Validators.required],
     fechaNacimiento: ['', Validators.required],
     titulo: ['', Validators.required],
+    imagenUsuario: [''],
   });
 }
 
@@ -645,6 +685,16 @@ cerrarModal() {
   this.modalDatosUsuario.nativeElement.click();
   this.modalInteres.nativeElement.click();
   this.modal.nativeElement.click();//proyectos
+  // this.modalDatosSkills.nativeElement.click();//proyectos
 }
 
+//IMAGEN
+
+uploadImage($event:any){
+  const id = this.route.snapshot.params['id'];
+  const name = "perfil_"+id;
+  // console.log("event");
+  // console.log($event.target.files[0].name);
+  this.imageService.uploadImage($event, name+$event.target.files[0].name);
+}
 }

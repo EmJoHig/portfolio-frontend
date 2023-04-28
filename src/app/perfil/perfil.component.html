@@ -3,11 +3,7 @@
       <ul class="social-icons pt-3">
         <li class="social-item"><a class="social-link text-light" href="https://www.facebook.com/anto.loky"><i class="ti-facebook"
               aria-hidden="true"></i></a></li>
-        <li class="social-item"><a class="social-link text-light" href="https://twitter.com/anto46loky"><i class="ti-twitter"
-              aria-hidden="true"></i></a></li>
         <li class="social-item"><a class="social-link text-light" href="https://www.instagram.com/antoneliapaulini"><i class="ti-instagram"
-              aria-hidden="true"></i></a></li>
-        <li class="social-item"><a class="social-link text-light" href="#"><i class="ti-github"
               aria-hidden="true"></i></a></li>
       </ul>
       <div class="header-content">
@@ -36,7 +32,7 @@
           </li>
         </ul>
         <ul class="navbar-nav brand ml-auto">
-          <img src="/assets/imgs/imagenperfil.jpg" alt="" class="brand-img">
+          <img src={{usuario?.imagenUsuario}} alt="" class="brand-img">
           <li class="brand-txt">
             <h5 class="brand-title">{{usuario?.nombre}} {{usuario?.apellido}}</h5>
             <div class="brand-subtitle">{{usuario?.titulo}}</div>
@@ -70,13 +66,11 @@
           <li><span>Fecha de nacimiento: </span>{{ usuario?.fechaNacimiento | date:'dd/MM/yyyy'}}</li>
           <li><span>Nombre: </span>{{usuario?.nombre}}</li>
           <li><span>Apellido: </span>{{usuario?.apellido}}</li>
-          <!-- <li><span>Email: </span>{{usuario?.mail}}</li> -->
+          <li><span>Email: </span>{{usuario?.mail}}</li>
         </ul>
         <ul class="social-icons pt-3">
-          <li class="social-item"><a class="social-link" href="#"><i class="ti-facebook" aria-hidden="true"></i></a></li>
-          <li class="social-item"><a class="social-link" href="#"><i class="ti-twitter" aria-hidden="true"></i></a></li>
-          <li class="social-item"><a class="social-link" href="#"><i class="ti-instagram" aria-hidden="true"></i></a></li>
-          <li class="social-item"><a class="social-link" href="#"><i class="ti-github" aria-hidden="true"></i></a></li>
+          <li class="social-item"><a class="social-link" href="https://www.facebook.com/anto.loky"><i class="ti-facebook" aria-hidden="true"></i></a></li>
+          <li class="social-item"><a class="social-link" href="https://www.instagram.com/antoneliapaulini"><i class="ti-instagram" aria-hidden="true"></i></a></li>
         </ul>
       </div>
       <div class="col-lg-4 about-card">
@@ -167,7 +161,7 @@
              </div>
              <div class="card-body pb-2">
               <ng-container *ngFor="let s of usuario?.skills">
-                <h6>{{s.porcentaje}}</h6>
+                <h6>{{s.nombre}}</h6>
                 <div class="progress mb-3">
                     <div class="progress-bar bg-danger" role="progressbar" [style.width.%]="s.porcentaje" aria-valuenow="25"  aria-valuemin="0" aria-valuemax="100"></div>
                 </div>

@@ -7,5 +7,5 @@ export class Proyecto {
     link: string;
     descripcion: string;
     usuario: Usuario;
-    imagen: string[];
+    imagen: string;
 }

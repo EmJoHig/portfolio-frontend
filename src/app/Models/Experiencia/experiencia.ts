@@ -4,5 +4,5 @@ export class Experiencia {
     fechainicio: Date;
     fechafin: Date;
     actividades: string;
-    imagen: string[];
+    imagen: string;
 }

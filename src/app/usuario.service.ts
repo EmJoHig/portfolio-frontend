@@ -15,10 +15,9 @@ import { HttpHeaders } from '@angular/common/http';
   providedIn: 'root'
 })
 export class UsuarioService {
-
-  //listado usuarios
-  private baseUrl = "https://portfolio-backend-ap-production.up.railway.app/";
   
+  private baseUrl = "https://portfolio-backend-production-72ef.up.railway.app/api/v1";
+  //private baseUrl = "http://localhost:8080/api/v1";
   
   constructor(private httpClient : HttpClient) { }
 
