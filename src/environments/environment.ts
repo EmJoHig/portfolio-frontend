@@ -4,13 +4,12 @@
 
 export const environment = {
   firebase: {
-    projectId: 'frontprueba-4d0fb',
-    appId: '1:216410921316:web:c174ed0e314c67e83bc271',
-    storageBucket: 'frontprueba-4d0fb.appspot.com',
-    locationId: 'southamerica-east1',
-    apiKey: 'AIzaSyANMwAxfzrUrGah-NbYgh_yOZdbBdTuZF4',
-    authDomain: 'frontprueba-4d0fb.firebaseapp.com',
-    messagingSenderId: '216410921316',
+    apiKey: "AIzaSyCMQgXc4oRXxBg76Z1dw8N0e28aQl3nK18",
+    authDomain: "portfolio-frontend-7c244.firebaseapp.com",
+    projectId: "portfolio-frontend-7c244",
+    storageBucket: "portfolio-frontend-7c244.appspot.com",
+    messagingSenderId: "900018671850",
+    appId: "1:900018671850:web:609001b3caab1c75aec793"
   },
   production: false
 };
