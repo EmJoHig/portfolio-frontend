@@ -10,6 +10,6 @@ export const environment = {
   },
   production: true,
   // URL: 'https://portfolio-backend-ap-production.up.railway.app/' //portfolio-backend-ap
-  URL: 'https://portafolio-andando.up.railway.app/' //portfolio-backend
+  URL: 'https://portfolio-backend-production-71d5.up.railway.app/' //portfolio-backend
 };
 
